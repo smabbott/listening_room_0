@@ -168,18 +168,22 @@ body{
     width:42px;
 }
 
+
 .box{
     box-sizing:border-box;
-    outline:1px solid #efeffe;
-    width:20px;
-    height:20px;
+    width:2px;
+    height:2px;
     float:left;
-    background-color:transparent;
-    margin:0 1px 1px 0;
+    background-color:#efeffe;
+    margin: 9px 10px 10px 9px
 }
 
 .on{
+    outline:1px solid #efeffe;
     background-color:#efefef;
+    width:20px;
+    height:20px;
+    margin:0 1px 1px 0;
 }
 
 

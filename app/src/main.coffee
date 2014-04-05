@@ -1,6 +1,6 @@
 $ ->
 
-  ip = '192.168.1.50'
+  ip = window.sampleIP || '192.168.1.50' 
   # ip = [0..255].join('.')
 
   parseIP = (ip)-> 
@@ -27,10 +27,10 @@ $ ->
 
   # parsedIP = parseIP ip
 
-  for part in parsedIP
-    digit = $("<div class='digit'></div>")
-    $('body').append(digit)
-    generateDigit(part, digit)
+  # for part in parsedIP
+  #   digit = $("<div class='digit'></div>")
+  #   $('body').append(digit)
+  #   generateDigit(part, digit)
 
   counterWrapper = $("<div class='digit counter'></div>")
   counter = 0

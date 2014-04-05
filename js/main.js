@@ -2,7 +2,7 @@
 (function() {
 
   $(function() {
-    var count, counter, counterInterval, counterWrapper, digit, generateDigit, ip, pad, parseIP, parseNum, parsedIP, part, toBoolean, _i, _len;
+    var count, counter, counterInterval, counterWrapper, digit, generateDigit, ip, pad, parseIP, parseNum, part, toBoolean, _i, _len;
     ip = '192.168.1.50';
     parseIP = function(ip) {
       var parts;
@@ -36,7 +36,7 @@
       }
       return _results;
     };
-    parsedIP = parseIP(ip);
+    console.log('hey');
     for (_i = 0, _len = parsedIP.length; _i < _len; _i++) {
       part = parsedIP[_i];
       digit = $("<div class='digit'></div>");
