@@ -1,0 +1,2 @@
+Compile and watch for changes in .coffee files
+coffee -wco app/js app/src/*.coffee

@@ -1,20 +1,21 @@
-$ ->
-
-  ip = window.sampleIP || '192.168.1.50' 
-  # ip = [0..255].join('.')
-
-  parseIP = (ip)-> 
+window.IPParser = 
+  parseIP: (ip)-> 
     parts = ip.split('.').map (i)->
-      parseNum(i)
+      IPParser.parseNum(i)
 
-  parseNum = (num)->
-    pad(parseInt(num).toString(2), 8)
+  parseNum: (num)->
+    IPParser.pad(parseInt(num).toString(2), 8)
 
-  pad = (s, l)->
+  pad: (s, l)->
     gap = l - s.length + 1
     while gap -= 1
       s = "0" + s
-    s
+    s 
+
+
+$ ->
+
+  ip = window.sampleIP || '192.168.1.50' 
 
   toBoolean = (b)->
     b == '1' or b == 1
@@ -25,20 +26,22 @@ $ ->
       box.addClass('on') if toBoolean(num[bit])
       digit.append(box)
 
-  # parsedIP = parseIP ip
+  ipBase10 = ip.split('.').map (i)->
+    parseInt(i)
 
-  # for part in parsedIP
-  #   digit = $("<div class='digit'></div>")
-  #   $('body').append(digit)
-  #   generateDigit(part, digit)
+  animateCounter = (counterWrapper, target)->
+    counter = 0
+    counterInterval = setInterval(`function(){count()}`, 10)
+    count = ->
+      counterWrapper.empty()
+      generateDigit(IPParser.parseNum(counter), counterWrapper)
+      if counter == target
+        clearInterval counterInterval
+      counter++
 
-  counterWrapper = $("<div class='digit counter'></div>")
-  counter = 0
-  counterInterval = setInterval(`function(){count()}`, 100)
-  count = ->
-    counterWrapper.empty()
-    generateDigit(parseNum(counter), counterWrapper)
-    if counter == 255
-      clearInterval counterInterval
-    counter++
+  for part in ipBase10
+    digit = $("<div class='digit'></div>")
+    $('body').append(digit)
+    animateCounter(digit, part)
+
   $('body').append(counterWrapper)
