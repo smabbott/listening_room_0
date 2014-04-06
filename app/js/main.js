@@ -59,7 +59,7 @@
     for (_i = 0, _len = ipBase10.length; _i < _len; _i++) {
       part = ipBase10[_i];
       digit = $("<div class='digit'></div>");
-      $('body').append(digit);
+      $('.container').append(digit);
       _results.push(animateCounter(digit, part));
     }
     return _results;

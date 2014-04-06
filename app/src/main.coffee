@@ -41,5 +41,5 @@ $ ->
 
   for part in ipBase10
     digit = $("<div class='digit'></div>")
-    $('body').append(digit)
+    $('.container').append(digit)
     animateCounter(digit, part)

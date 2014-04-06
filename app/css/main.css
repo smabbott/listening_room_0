@@ -174,19 +174,22 @@ body{
     width:2px;
     height:2px;
     float:left;
-    background-color:#efeffe;
+    background-color:white;
     margin: 9px 10px 10px 9px
 }
 
 .on{
-    outline:1px solid #efeffe;
-    background-color:#efefef;
+    outline:1px solid #eff4fe;
+    background-color:white;
     width:20px;
     height:20px;
     margin:0 1px 1px 0;
 }
 
-
+.container{
+    margin:100px auto 0 auto;
+    width:248px;
+}
 
 
 
