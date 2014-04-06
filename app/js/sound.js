@@ -45,8 +45,8 @@
       return parseInt(i);
     });
     carrier = new Carrier("sine", noteToFrequency(ipParts[0]));
-    modulator1 = new Modulator("sine", noteToFrequency(ipParts[1]), 300);
-    modulator2 = new Modulator("sine", noteToFrequency(ipParts[2]), 300);
+    modulator1 = new Modulator("sine", noteToFrequency(ipParts[1]), 10);
+    modulator2 = new Modulator("sine", noteToFrequency(ipParts[2]), 10);
     modulator2.gain.connect(carrier.osc.gain.gain);
     modulator1.gain.connect(carrier.osc.frequency);
     return carrier.gain.connect(context.destination);

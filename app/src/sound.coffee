@@ -44,8 +44,8 @@ $ ->
     parseInt(i)
 
   carrier = new Carrier("sine", noteToFrequency(ipParts[0]))
-  modulator1 = new Modulator("sine", noteToFrequency(ipParts[1]), 300)
-  modulator2 = new Modulator("sine", noteToFrequency(ipParts[2]), 300)
+  modulator1 = new Modulator("sine", noteToFrequency(ipParts[1]), 10)
+  modulator2 = new Modulator("sine", noteToFrequency(ipParts[2]), 10)
   # modulator3 = new Modulator("sine", ipParts[3], 300)
   modulator2.gain.connect(carrier.osc.gain.gain);
   modulator1.gain.connect(carrier.osc.frequency);
