@@ -20,6 +20,7 @@ $ ->
       @gain = context.createGainNode()
       @osc.type = type
       @osc.frequency.value = freq
+      @osc.gain = @gain
       @osc.connect(@gain)
       @osc.start(0)
 
@@ -42,13 +43,12 @@ $ ->
   ipParts = ip.split('.').map (i)->
     parseInt(i)
 
-  carrier = new Carrier("sine", ipParts[0])
-  modulator1 = new Modulator("sine", ipParts[1], 300)
-  modulator2 = new Modulator("sine", ipParts[2], 300)
-  modulator3 = new Modulator("sine", ipParts[3], 300)
-  modulator1.gain.connect(modulator2.osc.frequency);
-  modulator2.gain.connect(modulator3.osc.frequency);
-  modulator3.gain.connect(carrier.osc.frequency);
+  carrier = new Carrier("sine", noteToFrequency(ipParts[0]))
+  modulator1 = new Modulator("sine", noteToFrequency(ipParts[1]), 300)
+  modulator2 = new Modulator("sine", noteToFrequency(ipParts[2]), 300)
+  # modulator3 = new Modulator("sine", ipParts[3], 300)
+  modulator2.gain.connect(carrier.osc.gain.gain);
+  modulator1.gain.connect(carrier.osc.frequency);
   carrier.gain.connect(context.destination);
 
   # for part in ipParts
