@@ -43,5 +43,3 @@ $ ->
     digit = $("<div class='digit'></div>")
     $('body').append(digit)
     animateCounter(digit, part)
-
-  $('body').append(counterWrapper)

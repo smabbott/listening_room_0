@@ -22,7 +22,7 @@
   };
 
   $(function() {
-    var animateCounter, digit, generateDigit, ip, ipBase10, part, toBoolean, _i, _len;
+    var animateCounter, digit, generateDigit, ip, ipBase10, part, toBoolean, _i, _len, _results;
     ip = window.sampleIP || '192.168.1.50';
     toBoolean = function(b) {
       return b === '1' || b === 1;
@@ -55,13 +55,14 @@
         return counter++;
       };
     };
+    _results = [];
     for (_i = 0, _len = ipBase10.length; _i < _len; _i++) {
       part = ipBase10[_i];
       digit = $("<div class='digit'></div>");
       $('body').append(digit);
-      animateCounter(digit, part);
+      _results.push(animateCounter(digit, part));
     }
-    return $('body').append(counterWrapper);
+    return _results;
   });
 
 }).call(this);
