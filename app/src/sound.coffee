@@ -4,6 +4,7 @@ $ ->
   ip = window.sampleIP
   ip2 = "50.201.141.30"
   ip3 = "53.20.121.50"
+  ip4 = "153.120.213.250"
 
   # Create audio context
   context = new AudioContext
@@ -49,7 +50,7 @@ $ ->
     carrier = new OSC("sine", noteToFrequency(ipParts[0]))
     fm = new OSC("sine", noteToFrequency(ipParts[1]), 50)
     am = new OSC("sine", noteToFrequency(ipParts[2]), 0.125)
-    tempo = ((ipParts[3]/255) * 4500) + 500
+    tempo = ((ipParts[3]/255) * 19000) + 1000
     am.gain.connect(carrier.osc.gain.gain);
     fm.gain.connect(carrier.osc.frequency);
     env = new Envelope()
@@ -69,3 +70,4 @@ $ ->
   createVoice(parseIp(ip))
   createVoice(parseIp(ip2))
   createVoice(parseIp(ip3))
+  createVoice(parseIp(ip4))
