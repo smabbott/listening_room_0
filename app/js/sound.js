@@ -2,37 +2,47 @@
 (function() {
 
   $(function() {
-    var Carrier, Modulator, carrier, context, ip, ipParts, modulator1, modulator2, noteToFrequency;
+    var Envelope, OSC, context, createVoice, impulse, ip, ip2, ip3, noteToFrequency, parseIp;
     ip = window.sampleIP;
+    ip2 = "50.201.141.30";
+    ip3 = "53.20.121.50";
     context = new AudioContext;
-    Carrier = (function() {
+    OSC = (function() {
 
-      function Carrier(type, freq) {
-        this.osc = context.createOscillator();
-        this.gain = context.createGainNode();
-        this.osc.type = type;
-        this.osc.frequency.value = freq;
-        this.osc.gain = this.gain;
-        this.osc.connect(this.gain);
-        this.osc.start(0);
-      }
-
-      return Carrier;
-
-    })();
-    Modulator = (function() {
-
-      function Modulator(type, freq, gain) {
+      function OSC(type, freq, gain) {
+        if (gain == null) {
+          gain = 0.25;
+        }
         this.osc = context.createOscillator();
         this.gain = context.createGainNode();
         this.osc.type = type;
         this.osc.frequency.value = freq;
         this.gain.gain.value = gain;
+        this.osc.gain = this.gain;
         this.osc.connect(this.gain);
         this.osc.start(0);
       }
 
-      return Modulator;
+      return OSC;
+
+    })();
+    Envelope = (function() {
+
+      function Envelope() {
+        this.node = context.createGain();
+        this.node.gain.value = 0;
+        this.node;
+      }
+
+      Envelope.prototype.addEventToQueue = function(tempo, peak) {
+        peak |= 1;
+        this.node.gain.linearRampToValueAtTime(0, context.currentTime);
+        this.node.gain.linearRampToValueAtTime(peak, context.currentTime + 0.1);
+        this.node.gain.linearRampToValueAtTime(peak / 2, context.currentTime + 0.25);
+        return this.node.gain.linearRampToValueAtTime(0, context.currentTime + (tempo / 1000));
+      };
+
+      return Envelope;
 
     })();
     noteToFrequency = function(note) {
@@ -41,15 +51,39 @@
       }
       return noteFrequencies[note];
     };
-    ipParts = ip.split('.').map(function(i) {
-      return parseInt(i);
-    });
-    carrier = new Carrier("sine", noteToFrequency(ipParts[0]));
-    modulator1 = new Modulator("sine", noteToFrequency(ipParts[1]), 300);
-    modulator2 = new Modulator("sine", noteToFrequency(ipParts[2]), 300);
-    modulator2.gain.connect(carrier.osc.gain.gain);
-    modulator1.gain.connect(carrier.osc.frequency);
-    return carrier.gain.connect(context.destination);
+    parseIp = function(ip) {
+      return ip.split('.').map(function(i) {
+        return parseInt(i);
+      });
+    };
+    impulse = function(env, amEnv, fmEnv, tempo) {
+      env.addEventToQueue(tempo);
+      amEnv.addEventToQueue(tempo, 0.5);
+      return fmEnv.addEventToQueue(tempo / 2, 50);
+    };
+    createVoice = function(ipParts) {
+      var am, amEnv, carrier, env, fm, fmEnv, tempo;
+      carrier = new OSC("sine", noteToFrequency(ipParts[0]));
+      fm = new OSC("sine", noteToFrequency(ipParts[1]), 50);
+      am = new OSC("sine", noteToFrequency(ipParts[2]), 0.125);
+      tempo = ((ipParts[3] / 255) * 4500) + 500;
+      am.gain.connect(carrier.osc.gain.gain);
+      fm.gain.connect(carrier.osc.frequency);
+      env = new Envelope();
+      amEnv = new Envelope();
+      amEnv.node.connect(am.gain.gain);
+      fmEnv = new Envelope();
+      fmEnv.node.connect(fm.gain.gain);
+      carrier.gain.connect(env.node);
+      env.node.connect(context.destination);
+      impulse(env, amEnv, fmEnv, tempo);
+      return setInterval(function() {
+        return impulse(env, amEnv, fmEnv, tempo);
+      }, tempo);
+    };
+    createVoice(parseIp(ip));
+    createVoice(parseIp(ip2));
+    return createVoice(parseIp(ip3));
   });
 
 }).call(this);

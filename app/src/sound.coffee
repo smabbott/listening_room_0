@@ -2,63 +2,70 @@
 
 $ ->
   ip = window.sampleIP
+  ip2 = "50.201.141.30"
+  ip3 = "53.20.121.50"
 
   # Create audio context
   context = new AudioContext
 
-  # createOSC = (hz)->
-  #   osc = context.createOscillator()
-  #   osc.frequency.value = hz
-  #   osc.connect context.destination
-  #   osc.start 0 
-  #   osc
-
-
-  class Carrier
-    constructor: (type, freq) ->
+  class OSC
+    constructor: (type, freq, gain=0.25) ->
       @osc = context.createOscillator()
       @gain = context.createGainNode()
       @osc.type = type
       @osc.frequency.value = freq
+      @gain.gain.value = gain
       @osc.gain = @gain
       @osc.connect(@gain)
       @osc.start(0)
 
-  class Modulator
-    constructor: (type, freq, gain) ->
-      @osc = context.createOscillator()
-      @gain = context.createGainNode()
-      @osc.type = type
-      @osc.frequency.value = freq
-      @gain.gain.value = gain;
-      @osc.connect(@gain)
-      @osc.start(0)
+  class Envelope
+    constructor: ->
+      @node = context.createGain()
+      @node.gain.value = 0
+      @node
+
+    addEventToQueue: (tempo, peak)->
+      peak |= 1
+      @node.gain.linearRampToValueAtTime(0, context.currentTime);
+      @node.gain.linearRampToValueAtTime(peak, context.currentTime + 0.1);
+      @node.gain.linearRampToValueAtTime(peak/2, context.currentTime + 0.25);
+      @node.gain.linearRampToValueAtTime(0, context.currentTime + (tempo/1000));
 
   noteToFrequency = (note)->
     note = note - noteFrequencies.length - 1 if note > noteFrequencies.length
     noteFrequencies[note]
 
-  # TODO: parse ip into numbers, create notes based on those numbers.
-  # numbers could also represet attack, decay, hz, AM, FM, duration, volume...
-  ipParts = ip.split('.').map (i)->
-    parseInt(i)
+  parseIp = (ip)->
+    ip.split('.').map (i)->
+      parseInt(i)
 
-  carrier = new Carrier("sine", noteToFrequency(ipParts[0]))
-  modulator1 = new Modulator("sine", noteToFrequency(ipParts[1]), 300)
-  modulator2 = new Modulator("sine", noteToFrequency(ipParts[2]), 300)
-  # modulator3 = new Modulator("sine", ipParts[3], 300)
-  modulator2.gain.connect(carrier.osc.gain.gain);
-  modulator1.gain.connect(carrier.osc.frequency);
-  carrier.gain.connect(context.destination);
+  impulse = (env, amEnv, fmEnv, tempo)-> 
+    env.addEventToQueue(tempo) 
+    amEnv.addEventToQueue(tempo, 0.5) 
+    fmEnv.addEventToQueue(tempo/2, 50) 
 
-  # for part in ipParts
-  #  createOSC(noteToFrequency[part])
+  createVoice = (ipParts)->
+    carrier = new OSC("sine", noteToFrequency(ipParts[0]))
+    fm = new OSC("sine", noteToFrequency(ipParts[1]), 50)
+    am = new OSC("sine", noteToFrequency(ipParts[2]), 0.125)
+    tempo = ((ipParts[3]/255) * 4500) + 500
+    am.gain.connect(carrier.osc.gain.gain);
+    fm.gain.connect(carrier.osc.frequency);
+    env = new Envelope()
+    amEnv = new Envelope()
+    amEnv.node.connect(am.gain.gain)
+    fmEnv = new Envelope()
+    fmEnv.node.connect(fm.gain.gain)
+    carrier.gain.connect(env.node)
+    env.node.connect(context.destination)
 
-  # osc = createOSC(noteFrequencies[ipParts[0]])
-  # setInterval(`function(){cycle()}`, 500)
-  # i = 1
-  # cycle = ->
-  #   console.log i, ipParts[i], noteToFrequency(ipParts[i])
-  #   osc.frequency.value = noteToFrequency(ipParts[i])
-  #   i++
-  #   i = 0 if i == ipParts.length
+    impulse(env, amEnv, fmEnv, tempo)
+
+    setInterval -> 
+      impulse(env, amEnv, fmEnv, tempo)
+    , tempo
+
+  createVoice(parseIp(ip))
+  createVoice(parseIp(ip2))
+  createVoice(parseIp(ip3))
