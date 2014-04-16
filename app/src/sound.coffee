@@ -5,6 +5,12 @@ $ ->
   ip2 = "50.201.141.30"
   ip3 = "53.20.121.50"
   ip4 = "153.120.213.250"
+  ip5 = "40.140.127.2"
+  ip6 = "140.127.2.40"
+  ip7 = "127.2.40.140"
+  ip8 = "2.40.140.127"
+  ip9 = "172.16.1.20"
+  ip10 = "16.1.20.172"
 
   # Create audio context
   context = new AudioContext
@@ -96,5 +102,11 @@ $ ->
   createVoice(parseIp(ip2))
   createVoice(parseIp(ip3))
   createVoice(parseIp(ip4))
+  createVoice(parseIp(ip5))
+  createVoice(parseIp(ip6))
+  createVoice(parseIp(ip7))
+  createVoice(parseIp(ip8))
+  createVoice(parseIp(ip9))
+  createVoice(parseIp(ip10))
 
 

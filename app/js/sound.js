@@ -2,11 +2,17 @@
 (function() {
 
   $(function() {
-    var Envelope, OSC, context, createVoice, impulse, ip, ip2, ip3, ip4, noteToFrequency, parseIp;
+    var Envelope, OSC, context, createVoice, impulse, ip, ip10, ip2, ip3, ip4, ip5, ip6, ip7, ip8, ip9, noteToFrequency, parseIp;
     ip = window.sampleIP;
     ip2 = "50.201.141.30";
     ip3 = "53.20.121.50";
     ip4 = "153.120.213.250";
+    ip5 = "40.140.127.2";
+    ip6 = "140.127.2.40";
+    ip7 = "127.2.40.140";
+    ip8 = "2.40.140.127";
+    ip9 = "172.16.1.20";
+    ip10 = "16.1.20.172";
     context = new AudioContext;
     OSC = (function() {
 
@@ -85,7 +91,13 @@
     createVoice(parseIp(ip));
     createVoice(parseIp(ip2));
     createVoice(parseIp(ip3));
-    return createVoice(parseIp(ip4));
+    createVoice(parseIp(ip4));
+    createVoice(parseIp(ip5));
+    createVoice(parseIp(ip6));
+    createVoice(parseIp(ip7));
+    createVoice(parseIp(ip8));
+    createVoice(parseIp(ip9));
+    return createVoice(parseIp(ip10));
   });
 
 }).call(this);

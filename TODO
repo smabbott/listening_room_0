@@ -3,3 +3,4 @@
 * highlight ip when it chimes
 * websockets to keep clients updated with current list of ips
 * duration of tones is determined by number of visitors
+* a bit of reverb for a sense of space
