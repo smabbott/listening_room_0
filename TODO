@@ -1,0 +1,5 @@
+* spacialization based on geocoded ip address
+* show all ips
+* highlight ip when it chimes
+* websockets to keep clients updated with current list of ips
+* duration of tones is determined by number of visitors

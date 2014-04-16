@@ -29,9 +29,9 @@ $ ->
     addEventToQueue: (tempo, peak)->
       peak |= 1
       @node.gain.linearRampToValueAtTime(0, context.currentTime);
-      @node.gain.linearRampToValueAtTime(peak, context.currentTime + 0.1);
-      @node.gain.linearRampToValueAtTime(peak/2, context.currentTime + 0.25);
-      @node.gain.linearRampToValueAtTime(0, context.currentTime + (tempo/1000));
+      @node.gain.linearRampToValueAtTime(peak, context.currentTime + 0.009);
+      @node.gain.linearRampToValueAtTime(peak/3, context.currentTime + 0.05);
+      @node.gain.linearRampToValueAtTime(0, context.currentTime + (tempo/2000));
 
   noteToFrequency = (note)->
     note = note - noteFrequencies.length - 1 if note > noteFrequencies.length
@@ -43,23 +43,26 @@ $ ->
 
   impulse = (env, amEnv, fmEnv, tempo)-> 
     env.addEventToQueue(tempo) 
-    amEnv.addEventToQueue(tempo, 0.5) 
-    fmEnv.addEventToQueue(tempo/2, 50) 
+    amEnv.addEventToQueue(tempo/2, 2) 
+    fmEnv.addEventToQueue(tempo/2, 4) 
 
   createVoice = (ipParts)->
     carrier = new OSC("sine", noteToFrequency(ipParts[0]))
     fm = new OSC("sine", noteToFrequency(ipParts[1]), 50)
     am = new OSC("sine", noteToFrequency(ipParts[2]), 0.125)
     tempo = ((ipParts[3]/255) * 19000) + 1000
-    am.gain.connect(carrier.osc.gain.gain);
-    fm.gain.connect(carrier.osc.frequency);
     env = new Envelope()
     amEnv = new Envelope()
-    amEnv.node.connect(am.gain.gain)
+    am.gain.connect(amEnv.node);
+    amEnv.node.connect(carrier.osc.gain.gain)
     fmEnv = new Envelope()
-    fmEnv.node.connect(fm.gain.gain)
+    fm.gain.connect(fmEnv.node);
+    fmEnv.node.connect(carrier.osc.frequency)
     carrier.gain.connect(env.node)
     env.node.connect(context.destination)
+
+    # for visualization
+    # env.node.connect(A)
 
     impulse(env, amEnv, fmEnv, tempo)
 
@@ -67,7 +70,31 @@ $ ->
       impulse(env, amEnv, fmEnv, tempo)
     , tempo
 
+
+
+  # # Temp Visualization stuff # #
+  # A = context.createGainNode()
+  # analyser = context.createAnalyser()
+  # A.connect(analyser)
+  # analyser.connect(context.destination)
+
+  # freqDomain = new Uint8Array(analyser.frequencyBinCount)
+  # analyser.getByteFrequencyData(freqDomain)
+  # for count, i in analyser.frequencyBinCount
+  #   value = freqDomain[i]
+  #   percent = value / 256
+  #   height = HEIGHT * percent
+  #   offset = HEIGHT - height - 1
+  #   barWidth = WIDTH/analyser.frequencyBinCount
+  #   hue = i/analyser.frequencyBinCount * 360
+  #   drawContext.fillStyle = 'hsl(' + hue + ', 100%, 50%)'
+  #   drawContext.fillRect(i * barWidth, offset, barWidth, height)
+
+
+
   createVoice(parseIp(ip))
   createVoice(parseIp(ip2))
   createVoice(parseIp(ip3))
   createVoice(parseIp(ip4))
+
+

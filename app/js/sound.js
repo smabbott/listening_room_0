@@ -38,9 +38,9 @@
       Envelope.prototype.addEventToQueue = function(tempo, peak) {
         peak |= 1;
         this.node.gain.linearRampToValueAtTime(0, context.currentTime);
-        this.node.gain.linearRampToValueAtTime(peak, context.currentTime + 0.1);
-        this.node.gain.linearRampToValueAtTime(peak / 2, context.currentTime + 0.25);
-        return this.node.gain.linearRampToValueAtTime(0, context.currentTime + (tempo / 1000));
+        this.node.gain.linearRampToValueAtTime(peak, context.currentTime + 0.009);
+        this.node.gain.linearRampToValueAtTime(peak / 3, context.currentTime + 0.05);
+        return this.node.gain.linearRampToValueAtTime(0, context.currentTime + (tempo / 2000));
       };
 
       return Envelope;
@@ -59,8 +59,8 @@
     };
     impulse = function(env, amEnv, fmEnv, tempo) {
       env.addEventToQueue(tempo);
-      amEnv.addEventToQueue(tempo, 0.5);
-      return fmEnv.addEventToQueue(tempo / 2, 50);
+      amEnv.addEventToQueue(tempo / 2, 2);
+      return fmEnv.addEventToQueue(tempo / 2, 4);
     };
     createVoice = function(ipParts) {
       var am, amEnv, carrier, env, fm, fmEnv, tempo;
@@ -68,13 +68,13 @@
       fm = new OSC("sine", noteToFrequency(ipParts[1]), 50);
       am = new OSC("sine", noteToFrequency(ipParts[2]), 0.125);
       tempo = ((ipParts[3] / 255) * 19000) + 1000;
-      am.gain.connect(carrier.osc.gain.gain);
-      fm.gain.connect(carrier.osc.frequency);
       env = new Envelope();
       amEnv = new Envelope();
-      amEnv.node.connect(am.gain.gain);
+      am.gain.connect(amEnv.node);
+      amEnv.node.connect(carrier.osc.gain.gain);
       fmEnv = new Envelope();
-      fmEnv.node.connect(fm.gain.gain);
+      fm.gain.connect(fmEnv.node);
+      fmEnv.node.connect(carrier.osc.frequency);
       carrier.gain.connect(env.node);
       env.node.connect(context.destination);
       impulse(env, amEnv, fmEnv, tempo);
