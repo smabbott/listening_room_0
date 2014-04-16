@@ -21,7 +21,7 @@
           gain = 0.25;
         }
         this.osc = context.createOscillator();
-        this.gain = context.createGainNode();
+        this.gain = context.createGain();
         this.osc.type = type;
         this.osc.frequency.value = freq;
         this.gain.gain.value = gain;

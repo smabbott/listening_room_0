@@ -17,8 +17,9 @@ $ ->
 
   class OSC
     constructor: (type, freq, gain=0.25) ->
+      # debugger
       @osc = context.createOscillator()
-      @gain = context.createGainNode()
+      @gain = context.createGain()
       @osc.type = type
       @osc.frequency.value = freq
       @gain.gain.value = gain
