@@ -1,4 +1,12 @@
-
+contextClass =
+  window.AudioContext || 
+  window.webkitAudioContext || 
+  window.mozAudioContext || 
+  window.oAudioContext || 
+  window.msAudioContext
+if contextClass
+  # Web Audio API is available.
+  context = new contextClass();
 
 $ ->
   ip = window.sampleIP
@@ -11,13 +19,17 @@ $ ->
   ip8 = "2.40.140.127"
   ip9 = "172.16.1.20"
   ip10 = "16.1.20.172"
+  ip11 = "1.20.172.16"
+  ip12 = "20.172.16.1"
+  ip13 = "172.16.1.20"
+  ip14 = "16.1.20.172"
+  ip15 = "1.20.172.16"
 
   # Create audio context
-  context = new AudioContext
+  context = new contextClass()
 
   class OSC
     constructor: (type, freq, gain=0.25) ->
-      # debugger
       @osc = context.createOscillator()
       @gain = context.createGain()
       @osc.type = type
@@ -66,7 +78,30 @@ $ ->
     fm.gain.connect(fmEnv.node);
     fmEnv.node.connect(carrier.osc.frequency)
     carrier.gain.connect(env.node)
-    env.node.connect(context.destination)
+
+    # panning
+    panner = context.createPanner()
+    WIDTH = 5
+    HEIGHT = 5
+    centerX = WIDTH/2;
+    centerY = HEIGHT/2;
+    x = (Math.random()*10 - centerX)  / WIDTH;
+    y = (Math.random()*10 - centerY) / HEIGHT;
+    # Place the z coordinate slightly in behind the listener.
+    z = -0.5;
+    # Tweak multiplier as necessary.
+    scaleFactor = 2;
+    panner.setPosition(x * scaleFactor, y * scaleFactor, z);
+
+    angle = Math.random()*360
+    # Convert angle into a unit vector.
+    panner.setOrientation(Math.cos(angle), -Math.sin(angle), 1);
+
+    # Connect the node you want to spatialize to a panner.
+    env.node.connect(panner);
+    panner.connect(context.destination)
+
+    # env.node.connect(context.destination)
 
     # for visualization
     # env.node.connect(A)
@@ -109,5 +144,12 @@ $ ->
   createVoice(parseIp(ip8))
   createVoice(parseIp(ip9))
   createVoice(parseIp(ip10))
+  createVoice(parseIp(ip11))
+  createVoice(parseIp(ip12))
+  createVoice(parseIp(ip13))
+  createVoice(parseIp(ip14))
+  createVoice(parseIp(ip15))
+
+  context.listener.setPosition(0, 0, 0);
 
 

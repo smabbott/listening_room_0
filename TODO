@@ -1,6 +1,8 @@
 * spacialization based on geocoded ip address
+  http://chimera.labs.oreilly.com/books/1234000001552/ch06.html#s06_5
+* use real ips
 * show all ips
 * highlight ip when it chimes
 * websockets to keep clients updated with current list of ips
-* duration of tones is determined by number of visitors
+* duration of tones is determined by number of visitors?
 * a bit of reverb for a sense of space
