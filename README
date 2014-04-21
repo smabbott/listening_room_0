@@ -1,2 +1,5 @@
+# start server
+node app.js
+
 # Compile and watch for changes in .coffee files
-coffee -wco app/js app/src/*.coffee
+coffee -wco public/javascripts src/*.coffee

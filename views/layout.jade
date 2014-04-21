@@ -1,0 +1,19 @@
+doctype html
+html
+  head
+    meta(charset="utf-8")
+
+    title Listening Room 01
+
+    script(src="/javascripts/vendor/modernizr-2.6.2-respond-1.1.0.min.js")
+    script(src="/javascripts/vendor/jquery.2.1.min.js")
+    block pageScript
+
+    link(rel="stylesheet", href="/stylesheets/normalize.min.css")
+    link(rel="stylesheet", href="/stylesheets/main.css")
+
+  body
+    block content
+
+    script(type='text/javascript').
+      window.ips = !{JSON.stringify(ips)}

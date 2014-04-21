@@ -4,5 +4,11 @@
 * show all ips
 * highlight ip when it chimes
 * websockets to keep clients updated with current list of ips
+  ws http://einaros.github.io/ws/
+  npm install ws
+* move parsing and interpretation of ip addresses to server.
+* Obfuscate ips via some sort of salty hashness.
+* save note parameters in db as value to key (hashed ip)
+* detect when a user has left, delete their address from db
 * duration of tones is determined by number of visitors?
 * a bit of reverb for a sense of space
