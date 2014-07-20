@@ -4,29 +4,34 @@ contextClass =
   window.mozAudioContext || 
   window.oAudioContext || 
   window.msAudioContext
+
+window.room ?= {}
+window.room.voicesController = {}
+
 if contextClass
   # Web Audio API is available.
-  context = new contextClass();
+  context = new contextClass()
 
 $ ->
-  ip = window.sampleIP
-  ip2 = "50.201.141.30"
-  ip3 = "53.20.121.50"
-  ip4 = "153.120.213.250"
-  ip5 = "40.140.127.2"
-  ip6 = "140.127.2.40"
-  ip7 = "127.2.40.140"
-  ip8 = "2.40.140.127"
-  ip9 = "172.16.1.20"
-  ip10 = "16.1.20.172"
-  ip11 = "1.20.172.16"
-  ip12 = "20.172.16.1"
-  ip13 = "172.16.1.20"
-  ip14 = "16.1.20.172"
-  ip15 = "1.20.172.16"
 
   # Create audio context
   context = new contextClass()
+
+  class VoicesController
+    constructor: (ips)->
+      @voices = for ip in ips
+        address = ip.address
+        {address : createVoice(parseIp(ip.address))} # list of voices indexed by ip
+
+    # figure out which are new, which have left
+    # start new ones, stop exited ones, continue others
+    update:(ips)->
+      # stop voices if they are not in the list
+      for k, v of ips
+        @voices[k].end if (ips.indexOf(v) == -1)
+      # create a new oscillator for each ip in ips if it doesn't already exist in @voices
+      for ip in ips 
+        @voices[ip] = createVoice(parseIp(ip)) if !@voices[ip]?
 
   class OSC
     constructor: (type, freq, gain=0.25) ->
@@ -134,22 +139,35 @@ $ ->
 
 
 
-  createVoice(parseIp(ip))
-  createVoice(parseIp(ip2))
-  createVoice(parseIp(ip3))
-  createVoice(parseIp(ip4))
-  createVoice(parseIp(ip5))
-  createVoice(parseIp(ip6))
-  createVoice(parseIp(ip7))
-  createVoice(parseIp(ip8))
-  createVoice(parseIp(ip9))
-  createVoice(parseIp(ip10))
-  createVoice(parseIp(ip11))
-  createVoice(parseIp(ip12))
-  createVoice(parseIp(ip13))
-  createVoice(parseIp(ip14))
-  createVoice(parseIp(ip15))
+  # createVoice(parseIp(ip))
+  # createVoice(parseIp(ip2))
+  # createVoice(parseIp(ip3))
+  # createVoice(parseIp(ip4))
+  # createVoice(parseIp(ip5))
+  # createVoice(parseIp(ip6))
+  # createVoice(parseIp(ip7))
+  # createVoice(parseIp(ip8))
+  # createVoice(parseIp(ip9))
+  # createVoice(parseIp(ip10))
+  # createVoice(parseIp(ip11))
+  # createVoice(parseIp(ip12))
+  # createVoice(parseIp(ip13))
+  # createVoice(parseIp(ip14))
+  # createVoice(parseIp(ip15))
+
+  # TODO: pass ips to contoller. Let controller handle voice creation
+  # for ip in ips
+  #   do (ip)->
+  #     createVoice(parseIp(ip.address))
+
+  window.room.voicesController = new VoicesController(ips)
 
   context.listener.setPosition(0, 0, 0);
 
-
+  # ipz = [3,4,5,6]
+  # toRemove = []
+  # ipz2 = [1,2,3,4]
+  # for k, v of ipz
+  #   console.log(ipz2.indexOf(v), v)
+  #   toRemove.push(v) if (ipz2.indexOf(v) == -1)
+  # console.log toRemove

@@ -1,0 +1,5 @@
+$ ->
+  pusher = new Pusher('<%= Pusher.key %>') 
+  channel = pusher.subscribe('room_1');
+  channel.bind 'update', (data)->
+    alert(data.ips)

@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+gem 'pg'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.1.1'
@@ -28,15 +29,9 @@ gem 'spring',        group: :development
 
 gem 'haml'
 
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
+gem 'pusher'
 
-# Use unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
-
-# Use debugger
-# gem 'debugger', group: [:development, :test]
-
+group :development, :test do
+  gem "better_errors"
+  gem "binding_of_caller"
+end

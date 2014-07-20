@@ -1,3 +1,5 @@
+# TODO: On exit, send a signal to the server to remove this ip from the list
+
 window.IPParser = 
   parseIP: (ip)-> 
     parts = ip.split('.').map (i)->
@@ -12,10 +14,10 @@ window.IPParser =
       s = "0" + s
     s 
 
-
 $ ->
 
-  ip = window.sampleIP || '192.168.1.50' 
+  # ip = window.sampleIP || '192.168.1.50' 
+  ip = window.currentIp.address
 
   toBoolean = (b)->
     b == '1' or b == 1

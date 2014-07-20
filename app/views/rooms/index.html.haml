@@ -1,1 +1,4 @@
 - content_for :body_class, 'room_01'
+:javascript
+  window.ips = #{@ips.to_json}
+  window.currentIp = #{@current_ip.to_json}
