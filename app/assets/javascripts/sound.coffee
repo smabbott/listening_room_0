@@ -8,6 +8,23 @@ contextClass =
 window.room ?= {}
 window.room.voicesController = {}
 
+window.sampleips = [
+  "50.201.141.30"
+  ,"53.20.121.50"
+  ,"153.120.213.250"
+  ,"40.140.127.2"
+  ,"140.127.2.40"
+  ,"127.2.40.140"
+  ,"2.40.140.127"
+  ,"172.16.1.20"
+  , "16.1.20.172"
+  , "1.20.172.16"
+  , "20.172.16.1"
+  , "172.16.1.20"
+  , "16.1.20.172"
+  , "1.20.172.16"
+]
+
 if contextClass
   # Web Audio API is available.
   context = new contextClass()
@@ -163,11 +180,3 @@ $ ->
   window.room.voicesController = new VoicesController(ips)
 
   context.listener.setPosition(0, 0, 0);
-
-  # ipz = [3,4,5,6]
-  # toRemove = []
-  # ipz2 = [1,2,3,4]
-  # for k, v of ipz
-  #   console.log(ipz2.indexOf(v), v)
-  #   toRemove.push(v) if (ipz2.indexOf(v) == -1)
-  # console.log toRemove
