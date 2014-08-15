@@ -123,11 +123,6 @@ $ ->
     env.node.connect(panner);
     panner.connect(context.destination)
 
-    # env.node.connect(context.destination)
-
-    # for visualization
-    # env.node.connect(A)
-
     impulse(env, amEnv, fmEnv, tempo)
 
     setInterval -> 
@@ -135,48 +130,9 @@ $ ->
     , tempo
 
 
-
-  # # Temp Visualization stuff # #
-  # A = context.createGainNode()
-  # analyser = context.createAnalyser()
-  # A.connect(analyser)
-  # analyser.connect(context.destination)
-
-  # freqDomain = new Uint8Array(analyser.frequencyBinCount)
-  # analyser.getByteFrequencyData(freqDomain)
-  # for count, i in analyser.frequencyBinCount
-  #   value = freqDomain[i]
-  #   percent = value / 256
-  #   height = HEIGHT * percent
-  #   offset = HEIGHT - height - 1
-  #   barWidth = WIDTH/analyser.frequencyBinCount
-  #   hue = i/analyser.frequencyBinCount * 360
-  #   drawContext.fillStyle = 'hsl(' + hue + ', 100%, 50%)'
-  #   drawContext.fillRect(i * barWidth, offset, barWidth, height)
-
-
-
-  # createVoice(parseIp(ip))
-  # createVoice(parseIp(ip2))
-  # createVoice(parseIp(ip3))
-  # createVoice(parseIp(ip4))
-  # createVoice(parseIp(ip5))
-  # createVoice(parseIp(ip6))
-  # createVoice(parseIp(ip7))
-  # createVoice(parseIp(ip8))
-  # createVoice(parseIp(ip9))
-  # createVoice(parseIp(ip10))
-  # createVoice(parseIp(ip11))
-  # createVoice(parseIp(ip12))
-  # createVoice(parseIp(ip13))
-  # createVoice(parseIp(ip14))
-  # createVoice(parseIp(ip15))
-
-  # TODO: pass ips to contoller. Let controller handle voice creation
-  # for ip in ips
-  #   do (ip)->
-  #     createVoice(parseIp(ip.address))
-
   window.room.voicesController = new VoicesController(ips)
 
   context.listener.setPosition(0, 0, 0);
+
+  $('body').on 'unload', (e)->
+    $.get '/ips/', {method:'delete'}, (e)->
