@@ -1,5 +1,6 @@
 source 'https://rubygems.org'
 
+
 gem 'pg'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
@@ -33,3 +34,5 @@ group :development, :test do
   gem "better_errors"
   gem "binding_of_caller"
 end
+
+ruby '2.1.1'
