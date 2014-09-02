@@ -18,6 +18,7 @@ $ ->
 
   # ip = window.sampleIP || '192.168.1.50' 
   ip = window.currentIp.address
+  ipId = window.currentIp.id
 
   toBoolean = (b)->
     b == '1' or b == 1
@@ -45,3 +46,11 @@ $ ->
     digit = $("<div class='digit'></div>")
     $('.container').append(digit)
     animateCounter(digit, part)
+
+  window.onbeforeunload = selfDestruct
+
+  # remove the current user after an hour.
+  selfDestruct = ->
+    $.get('/ips/' + ipId, {_method:'delete'})
+
+  setInterval selfDestruct, 1000*60*60

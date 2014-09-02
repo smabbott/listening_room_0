@@ -47,7 +47,7 @@ $ ->
         voice.end() if (ips.indexOf(voice.toIp()) == -1)
       # create a new oscillator for each ip in ips if it doesn't already exist in @voices
       for ip in ips 
-        @voices[ip] = new Voice(parseIp(ip)) if !@voices[ip]?
+        @voices[ip] = new Voice(parseIp(ip.address)) if !@voices[ip]?
 
   class OSC
     constructor: (type, freq, gain=0.25) ->
@@ -143,5 +143,4 @@ $ ->
 
   context.listener.setPosition(0, 0, 0);
 
-  $('body').on 'unload', (e)->
-    $.get '/ips/', {method:'delete'}, (e)->
+
