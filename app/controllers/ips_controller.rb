@@ -4,9 +4,9 @@ class IpsController < ApplicationController
 
     @ips = Ip.all
     # TODO: abstract to concern
-    Pusher['room_1'].trigger('update', {
-      notes: @ips
-    })
+    # Pusher['presence-room-1'].trigger('update', {
+    #   notes: @ips
+    # })
     redirect :back
   end
 end

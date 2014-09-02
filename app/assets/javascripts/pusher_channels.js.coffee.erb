@@ -1,5 +1,24 @@
+window.pusher = {}
+window.room ?= {}
+window.room.voicesController ?= {}
 $ ->
-  pusher = new Pusher('<%= Pusher.key %>') 
-  channel = pusher.subscribe('room_1');
-  channel.bind 'update', (notes)->
-    window.room.voicesController.update(notes.notes)
+  # pusher = new Pusher('<%= Pusher.key %>') 
+  window.pusher = new Pusher('<%= Pusher.key %>', { authEndpoint: '/pusher/auth' });
+  channel = window.pusher.subscribe('presence-room-1');
+  # channel.bind 'update', (notes)->
+  #   window.room.voicesController.update(notes.notes)
+  channel.bind 'pusher:subscription_succeeded', (members)->
+    console.log 'subscription_succeeded'
+    # generate voices given member-voice objects
+    voices = []
+    members.each (member)->
+      voices.push member.info.voice
+    # debugger
+    window.room.voicesController = new VoicesController(voices)
+
+  channel.bind 'pusher:member_added', (member) ->
+    console.log 'pusher:member_added'
+    # create a new voice
+  channel.bind 'pusher:member_removed', (member) -> 
+    console.log 'pusher:member_removed'
+    # destroy voice 
