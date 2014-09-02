@@ -5,31 +5,9 @@ contextClass =
   window.oAudioContext || 
   window.msAudioContext
 
-# window.room ?= {}
-# window.room.voicesController = {}
-
-# window.sampleips = [
-#   "50.201.141.30"
-#   ,"53.20.121.50"
-#   ,"153.120.213.250"
-#   ,"40.140.127.2"
-#   ,"140.127.2.40"
-#   ,"127.2.40.140"
-#   ,"2.40.140.127"
-#   ,"172.16.1.20"
-#   , "16.1.20.172"
-#   , "1.20.172.16"
-#   , "20.172.16.1"
-#   , "172.16.1.20"
-#   , "16.1.20.172"
-#   , "1.20.172.16"
-# ]
-
 if contextClass
   # Web Audio API is available.
   context = new contextClass()
-
-# $ ->
 
 class window.VoicesController
   constructor: (vs)->
@@ -37,15 +15,12 @@ class window.VoicesController
       # new Voice(parseIp(ip.address))
       new Voice(v)
 
-  # figure out which are new, which have left
-  # start new ones, stop exited ones, continue others
-  update:(ips)->
-    # stop voices if they are not in the list
-    for voice in @voices
-      voice.end() if (ips.indexOf(voice.toIp()) == -1)
-    # create a new oscillator for each ip in ips if it doesn't already exist in @voices
-    for ip in ips 
-      @voices[ip] = new Voice(parseIp(ip.address)) if !@voices[ip]?
+  addVoice:(v)->
+    @voices.push new Voice(v)
+
+  removeVoice:(v)->
+   for voice in @voices
+      voice.end() if (voice.id == v.id) 
 
 class OSC
   constructor: (type, freq, gain=0.25) ->
@@ -74,6 +49,7 @@ class Envelope
 class Voice
   constructor: (@parts)-> 
     self = @
+    @id = @parts.id
     carrier = new OSC("sine", @parts.carrier)
     fm = new OSC("sine", @parts.fm, 50)
     am = new OSC("sine", @parts.am, 0.125)
@@ -124,21 +100,3 @@ class Voice
 
   end:->
     clearInterval(@interval)
-
-  toIp:->
-    @ipParts.join('.')
-
-# noteToFrequency = (note)->
-#   note = note - noteFrequencies.length - 1 if note > noteFrequencies.length
-#   noteFrequencies[note]
-
-# parseIp = (ip)->
-#   ip.split('.').map (i)->
-#     parseInt(i)
-
-
-# window.room.voicesController = new VoicesController(ips)
-
-# context.listener.setPosition(0, 0, 0);
-
-

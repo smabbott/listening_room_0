@@ -50,6 +50,6 @@ $ ->
   # remove the current user after an hour.
   selfDestruct = ->
     window.pusher.unsubscribe('presence-room-1');
-    $.get('/ips/' + ipId, {_method:'delete'})
+    # $.get('/ips/' + ipId, {_method:'delete'})
 
   setInterval selfDestruct, 1000*60*60

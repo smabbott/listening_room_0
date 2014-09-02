@@ -8,6 +8,7 @@ class Ip < ActiveRecord::Base
       fm:      note_to_frequency(parse_ip[1]),
       am:      note_to_frequency(parse_ip[2]),
       tempo:   note_to_frequency(parse_ip[3]),
+      id:      id
     }
   end
 
