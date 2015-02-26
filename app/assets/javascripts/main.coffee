@@ -1,20 +1,20 @@
-# window.IPParser = 
-#   parseIP: (ip)-> 
-#     parts = ip.split('.').map (i)->
-#       IPParser.parseNum(i)
+window.IPParser = 
+  parseIP: (ip)-> 
+    parts = ip.split('.').map (i)->
+      IPParser.parseNum(i)
 
-#   parseNum: (num)->
-#     IPParser.pad(parseInt(num).toString(2), 8)
+  parseNum: (num)->
+    IPParser.pad(parseInt(num).toString(2), 8)
 
-#   pad: (s, l)->
-#     gap = l - s.length + 1
-#     while gap -= 1
-#       s = "0" + s
-#     s 
+  pad: (s, l)->
+    gap = l - s.length + 1
+    while gap -= 1
+      s = "0" + s
+    s 
 
 $ ->
 
-  # # ip = window.sampleIP || '192.168.1.50' 
+  # ip = window.sampleIP || '192.168.1.50' 
   # ip = window.currentIp.address
   # ipId = window.currentIp.id
 

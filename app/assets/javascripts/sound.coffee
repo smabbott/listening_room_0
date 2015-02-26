@@ -53,7 +53,7 @@ class Voice
     carrier = new OSC("sine", @parts.carrier)
     fm = new OSC("sine", @parts.fm, 50)
     am = new OSC("sine", @parts.am, 0.125)
-    tempo = ((@parts.tempo/255) * 19000) + 1000
+    tempo = @parts.tempo #((@parts.tempo/255) * 19000) + 1000
     env = new Envelope()
     amEnv = new Envelope()
     am.gain.connect(amEnv.node);

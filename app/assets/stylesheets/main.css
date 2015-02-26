@@ -179,7 +179,10 @@ body{
 }
 
 .on{
-    outline:1px solid #eff4fe;
+    border-radius:50%;
+    /*outline:1px solid #eff4fe;*/
+    /*outline:1px solid #dbe0ea;*/
+    border:1px solid #d7dbe5;
     background-color:white;
     width:20px;
     height:20px;
