@@ -2,7 +2,6 @@ class PusherController < ApplicationController
   protect_from_forgery :except => :auth # stop rails CSRF protection for this action
 
   def auth
-    debugger
     puts "-------------- PusherController"
     puts 'auth'
     @current_ip = Ip.find_or_create_by(address: request.remote_ip)

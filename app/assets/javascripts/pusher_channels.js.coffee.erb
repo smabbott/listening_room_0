@@ -26,6 +26,7 @@ $ ->
   # create a new voice
   channel.bind 'pusher:member_added', (member) ->
     console.log 'pusher:member_added'
+    console.log member.info
     window.room.voicesController.addVoice(member.info.voice)
     window.room.digitsController.addDigits(member.info.ip)
 
