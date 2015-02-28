@@ -1,7 +1,8 @@
 class IpsController < ApplicationController
   
   def presence_event
-    debugger 
+    puts "----------------------------------"
+    puts "catch presence event"
     # TODO: create an ip or user given pusher subscription webhook
   end
 
