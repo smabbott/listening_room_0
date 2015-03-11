@@ -158,7 +158,8 @@ nav a:hover {
    ========================================================================== */
 
 body{
-    background-color:#e0e5ef;
+    /*background-color:#e0e5ef;*/
+    background-color:slategray;
     padding:40px;
 }
 
@@ -182,7 +183,8 @@ body{
     border-radius:50%;
     /*outline:1px solid #eff4fe;*/
     /*outline:1px solid #dbe0ea;*/
-    border:1px solid #d7dbe5;
+    /*border:1px solid #d7dbe5;*/
+    border:1px solid rgb(95, 113, 131);
     background-color:white;
     width:20px;
     height:20px;

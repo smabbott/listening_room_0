@@ -95,8 +95,8 @@ class Voice
 
   impulse : (env, amEnv, fmEnv, tempo)-> 
     env.addEventToQueue(tempo) 
-    amEnv.addEventToQueue(tempo/2, 2) 
-    fmEnv.addEventToQueue(tempo/2, 4) 
+    amEnv.addEventToQueue(tempo/2, 1) 
+    fmEnv.addEventToQueue(tempo/2, 3) 
 
   end:->
     clearInterval(@interval)
