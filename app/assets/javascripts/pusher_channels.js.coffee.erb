@@ -10,7 +10,6 @@ $ ->
 
   # generate voices given member-voice objects
   channel.bind 'pusher:subscription_succeeded', (members)->
-    console.log 'subscription_succeeded'
     voices = []
     digits = []
     members.each (member)->
@@ -23,14 +22,11 @@ $ ->
 
   # create a new voice
   channel.bind 'pusher:member_added', (member) ->
-    console.log 'pusher:member_added'
-    console.log member.info
     window.room.voicesController.addVoice(member.info.voice)
     window.room.digitsController.addDigits(member.info.ip)
 
   # destroy voice 
   channel.bind 'pusher:member_removed', (member) -> 
-    console.log 'pusher:member_removed'
     window.room.voicesController.removeVoice(member.info.voice)
     # TODO: In order to remove digits the digits need to be groupd as an address with an ip attached (to search by)
     # window.room.digitsController.removeDigits(member.info.ip)

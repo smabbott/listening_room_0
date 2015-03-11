@@ -159,7 +159,7 @@ nav a:hover {
 
 body{
     /*background-color:#e0e5ef;*/
-    background-color:slategray;
+    background-color:salmon;
     padding:40px;
 }
 
@@ -186,11 +186,13 @@ body{
     /*outline:1px solid #eff4fe;*/
     /*outline:1px solid #dbe0ea;*/
     /*border:1px solid #d7dbe5;*/
-    border:1px solid rgb(95, 113, 131);
+    /*border:1px solid rgb(95, 113, 131);*/
     background-color:white;
-    width:20px;
-    height:20px;
-    margin:0 1px 1px 0;
+    /*width:20px;*/
+    width:10px;
+    /*height:20px;*/
+    height:10px;
+    margin:0 11px 11px 0;
 }
 
 .container{
