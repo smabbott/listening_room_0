@@ -16,7 +16,7 @@ $ ->
     members.each (member)->
       console.log member.info
       voices.push member.info.voice
-      digits.push member.info.ip
+      digits.push member.info.digits
     window.room.voicesController = new VoicesController(voices)
     window.room.digitsController = new window.DigitsController(digits, $("#digits-container"))
 

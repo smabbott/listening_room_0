@@ -9,7 +9,7 @@ class PusherController < ApplicationController
       :user_id => @current_voice.id,
       :user_info => {
         :voice => @current_voice.attributes,
-        :ip => @current_voice.address
+        :digits => @current_voice.address
       }
     })
 
