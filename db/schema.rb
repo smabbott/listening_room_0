@@ -11,13 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140719035313) do
+ActiveRecord::Schema.define(version: 20150311024338) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "ips", force: true do |t|
-    t.string   "address"
+  create_table "voices", force: true do |t|
+    t.float    "am"
+    t.float    "fm"
+    t.float    "carrier"
+    t.integer  "tempo"
     t.datetime "created_at"
     t.datetime "updated_at"
   end

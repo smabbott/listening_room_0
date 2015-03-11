@@ -4,16 +4,14 @@ class PusherController < ApplicationController
   def auth
     puts "-------------- PusherController"
     puts 'auth'
-    @current_ip = Ip.find_or_create_by(address: request.remote_ip)
+    @current_voice = Voice.create
     # @ips = Ip.all
     response = Pusher[params[:channel_name]].authenticate(params[:socket_id], {
-      :user_id => @current_ip.id,
-      :user_info => {
-        :voice => @current_ip.voice,
-        :ip => @current_ip.address
-      }
+      :user_id => @current_voice.id,
+      :user_info => @current_voice.attributes
     })
 
     render :json => response
   end
+
 end
