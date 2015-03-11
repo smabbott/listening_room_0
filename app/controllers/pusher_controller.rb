@@ -5,7 +5,6 @@ class PusherController < ApplicationController
     puts "-------------- PusherController"
     puts 'auth'
     @current_voice = Voice.create
-    # @ips = Ip.all
     response = Pusher[params[:channel_name]].authenticate(params[:socket_id], {
       :user_id => @current_voice.id,
       :user_info => @current_voice.attributes

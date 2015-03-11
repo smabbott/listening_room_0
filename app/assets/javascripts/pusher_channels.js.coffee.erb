@@ -17,9 +17,7 @@ $ ->
       console.log member.info
       voices.push member.info.voice
       digits.push member.info.ip
-    # TODO: uncomment for sound
     window.room.voicesController = new VoicesController(voices)
-
     window.room.digitsController = new window.DigitsController(digits, $("#digits-container"))
 
 
