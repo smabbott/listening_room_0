@@ -27,7 +27,7 @@ class Voice < ActiveRecord::Base
     self.carrier = FREQUENCIES[(rand * FREQUENCIES.length).round]
     self.fm = FREQUENCIES[((rand * FREQUENCIES.length)/2).round]
     self.am = FREQUENCIES[(rand * FREQUENCIES.length).round]
-    self.tempo = rand * (10000 / 1000) + 1000
+    self.tempo = (rand * (5000 - 1000)) + 1000
   end
 
 end
