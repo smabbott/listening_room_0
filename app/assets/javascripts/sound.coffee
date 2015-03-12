@@ -44,7 +44,7 @@ class Envelope
     @node.gain.linearRampToValueAtTime(0, context.currentTime);
     @node.gain.linearRampToValueAtTime(peak, context.currentTime + 0.009);
     @node.gain.linearRampToValueAtTime(peak/3, context.currentTime + 0.05);
-    @node.gain.linearRampToValueAtTime(0, context.currentTime + (tempo/2000));
+    @node.gain.linearRampToValueAtTime(0, context.currentTime + (tempo/1000));
 
 class Voice
   constructor: (@parts)-> 
@@ -87,8 +87,11 @@ class Voice
 
     self.impulse(env, amEnv, fmEnv, tempo)
 
-    @interval = setInterval -> 
-      self.impulse(env, amEnv, fmEnv, tempo)
+    @interval = 0
+    setInterval ->
+      @interval = setInterval -> 
+        self.impulse(env, amEnv, fmEnv, tempo)
+      , tempo
     , tempo
 
     self
