@@ -172,11 +172,11 @@ body{
 
 .box{
     box-sizing:border-box;
-    display:none;
+    /*display:none;*/
     width:2px;
     height:2px;
     float:left;
-    background-color:white;
+    background-color:transparent;
     margin: 9px 10px 10px 9px
 }
 

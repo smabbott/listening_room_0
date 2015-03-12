@@ -13,7 +13,7 @@ $ ->
     voices = []
     digits = []
     members.each (member)->
-      console.log member.info
+      # console.log member.info
       voices.push member.info.voice
       digits.push member.info.digits
     window.room.voicesController = new VoicesController(voices)
@@ -23,7 +23,7 @@ $ ->
   # create a new voice
   channel.bind 'pusher:member_added', (member) ->
     window.room.voicesController.addVoice(member.info.voice)
-    window.room.digitsController.addDigits(member.info.ip)
+    window.room.digitsController.addDigits(member.info.digits)
 
   # destroy voice 
   channel.bind 'pusher:member_removed', (member) -> 
