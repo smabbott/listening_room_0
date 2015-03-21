@@ -8,8 +8,8 @@ class PusherController < ApplicationController
     response = Pusher[params[:channel_name]].authenticate(params[:socket_id], {
       :user_id => @current_voice.id,
       :user_info => {
-        :voice => @current_voice.attributes.reject{|k,v| k == :address},
-        :digits => @current_voice.address
+        :voice => @current_voice.attributes.reject{|k,v| k.to_sym == :address},
+        :digits => @current_voice.digits
       }
     })
 
