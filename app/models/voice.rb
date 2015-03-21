@@ -18,15 +18,15 @@ class Voice < ActiveRecord::Base
     self.carrier = note_to_frequency(parse_ip[0])
     self.fm = note_to_frequency(parse_ip[3])/2
     self.am = note_to_frequency(parse_ip[2])/2
-    self.tempo = note_to_frequency(parse_ip[0]) * 10 + 1000
+    self.tempo = (note_to_frequency(parse_ip[0])/frequency_range) * 4000 + 1000 # at least 1 second, at most 5 seconds
   end
 
   def digits
-    min = FREQUENCIES.first
-    max = FREQUENCIES.last
-    range = max - min
+    [self.carrier, self.fm, self.am, self.tempo].collect{|i| ((i.to_f/frequency_range)*255).to_i}.join('.')
+  end
 
-    [self.carrier, self.fm, self.am, self.tempo].collect{|i| ((i.to_f/range)*255).to_i}.join('.')
+  def frequency_range
+    FREQUENCIES.last - FREQUENCIES.first
   end
 
 end

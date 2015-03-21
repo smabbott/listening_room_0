@@ -4,21 +4,17 @@ class window.DigitsController
     @digits = [] 
     for d in ds
       @addDigits(d)
-      # dig = new Digit(d)
-      
-        # @el.append(digit)
 
   addDigit:(d)->
     dig = new Digit(d)
     @digits.push dig
     @el.append(dig.el)
 
-    # TODO:
-    # removeDigit:(d)->
-    # for digit in @digits
-    # if (digit.id == d.id) 
-    # TODO: remove element based on id
-    # digit.end() 
+  # TODO:
+  removeDigit:(d)->
+    for digit in @digits
+      if (digit.id == d.id) 
+        digit.end() 
 
   addDigits:(d)->
     ipBase10 = d.split('.').map (i)->
@@ -54,5 +50,5 @@ class Digit
       counter++
     ,10)
 
-  # count: (counter)->
-  #   debugger
+  end:->
+    @el.remove()
