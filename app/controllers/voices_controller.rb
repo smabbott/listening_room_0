@@ -19,8 +19,7 @@ class VoicesController < ApplicationController
     end
 
     puts params
-    # render nothing: true, status: 200
-    render status: 200
+    render nothing: true, status: 200
   end
 
   def delete
