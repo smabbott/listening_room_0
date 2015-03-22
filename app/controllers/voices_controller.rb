@@ -8,20 +8,19 @@ class VoicesController < ApplicationController
     # todo: different things depending on event
     params["events"].each do |event|
       if event["name"] == 'member_removed'
-        puts "remove member #{event["user_id"]}"
         voice = Voice.find event["user_id"].to_i
-        voice.destroy
+        voice.destroy unless voice.blank?
       end
       # case event["name"]
       # when "member_added"
       #   # broadcast member_added to 
 
       # end
-      render json:{head: :ok}
     end
 
     puts params
-    render nothing: true, status: 200
+    # render nothing: true, status: 200
+    render status: 200
   end
 
   def delete
