@@ -14,7 +14,16 @@ request.open('GET', '/impulse.wav', true)
 request.responseType = 'arraybuffer'
 
 # Reverb
-mixer = context.createConvolver();
+drymix = context.createGain()
+wetmix = context.createGain()
+reverb = context.createConvolver()
+# dynamic compression
+compressor = context.createDynamicsCompressor()
+drymix.connect(compressor)
+drymix.connect(reverb)
+wetmix.connect(compressor)
+compressor.connect(context.destination);
+
 impulseResponseBuffer = null
 # Decode asynchronously
 # Impulse sample for Rverb
@@ -23,20 +32,13 @@ request.onload = ->
   context.decodeAudioData request.response, (theBuffer)->
     # buffer = theBuffer
     impulseResponseBuffer = theBuffer
-    mixer.buffer = impulseResponseBuffer;
-    # dynamic compression
-    compressor = context.createDynamicsCompressor();
-
-    mixer.connect(compressor);
-    compressor.connect(context.destination);
-
+    reverb.buffer = impulseResponseBuffer;
+    reverb.connect(wetmix);
     
   , (e)->
     console.log e
 
 request.send();
-
-
 
 
 class window.VoicesController
@@ -73,7 +75,7 @@ class Envelope
     peak |= 1
     @node.gain.linearRampToValueAtTime(0, context.currentTime);
     @node.gain.linearRampToValueAtTime(peak, context.currentTime + 0.009);
-    @node.gain.linearRampToValueAtTime(peak/3, context.currentTime + 0.05);
+    @node.gain.linearRampToValueAtTime(peak/4, context.currentTime + 0.03);
     @node.gain.linearRampToValueAtTime(0, context.currentTime + (tempo/1000));
 
 class Voice
@@ -85,13 +87,18 @@ class Voice
     fm = new OSC("sine", @parts.fm, 50)
     am = new OSC("sine", @parts.am, 0.125)
     tempo = @parts.tempo #((@parts.tempo/255) * 19000) + 1000
+    lowpass = context.createBiquadFilter()
+    lowpass.type = 'lowpass'
+    lowpass.frequency.value = 1000
     env = new Envelope()
     amEnv = new Envelope()
-    am.gain.connect(amEnv.node);
+    am.gain.connect(amEnv.node)
     amEnv.node.connect(carrier.osc.gain.gain)
     fmEnv = new Envelope()
-    fm.gain.connect(fmEnv.node);
+    fm.gain.connect(fmEnv.node)
     fmEnv.node.connect(carrier.osc.frequency)
+    # lowpassEnv = new Envelope()
+    # lowpassEnv.node.connect(lowpass.frequency)
     carrier.gain.connect(env.node)
 
     # panning
@@ -112,9 +119,9 @@ class Voice
     # Convert angle into a unit vector.
     panner.setOrientation(Math.cos(angle), -Math.sin(angle), 1);
 
-    # Connect the node you want to spatialize to a panner.
-    env.node.connect(panner);
-    panner.connect(mixer)
+    env.node.connect(lowpass)
+    lowpass.connect(panner) 
+    panner.connect(drymix)
 
     self.impulse(env, amEnv, fmEnv, tempo)
 
@@ -129,7 +136,7 @@ class Voice
     self
 
   impulse : (env, amEnv, fmEnv, tempo)-> 
-    env.addEventToQueue(tempo) 
+    env.addEventToQueue(tempo/2) 
     amEnv.addEventToQueue(tempo/2, 1) 
     fmEnv.addEventToQueue(tempo/2, 3) 
 
