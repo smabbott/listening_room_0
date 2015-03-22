@@ -1,4 +1,3 @@
-* LP filter with sharp attack & decay and long release envelope
 * add some warble to the notes
 * spacialization based on geocoded ip address
   http://chimera.labs.oreilly.com/books/1234000001552/ch06.html#s06_5
@@ -6,3 +5,4 @@
 * find a way to limit volume on harsh sounds
 * dynamic volume control: http://chimera.labs.oreilly.com/books/1234000001552/ch03.html#s03_4
 * maybe there is a way to use the combination of modulators and fundamental to determine the percieved pitch and adjust them accordingly to hit a target range
+* use unicorn server

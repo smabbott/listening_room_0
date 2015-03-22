@@ -9,7 +9,7 @@ class VoicesController < ApplicationController
     params["events"].each do |event|
       if event["name"] == 'member_removed'
         params["events"]["voice"]
-        voice = Voice.find event["user_id"]
+        voice = Voice.find event["user_id"].to_i
         voice.destroy
       end
       # case event["name"]
