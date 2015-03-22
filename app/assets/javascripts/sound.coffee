@@ -19,7 +19,7 @@ class window.VoicesController
     @voices.push new Voice(v)
 
   removeVoice:(v)->
-   for voice in @voices
+    for voice in @voices
       voice.end() if (voice.id == v.id) 
 
 class OSC
@@ -88,11 +88,11 @@ class Voice
     self.impulse(env, amEnv, fmEnv, tempo)
 
     @interval = 0
-    setInterval ->
-      @interval = setInterval -> 
-        self.impulse(env, amEnv, fmEnv, tempo)
-      , tempo
+    # setInterval ->
+    @interval = setInterval -> 
+      self.impulse(env, amEnv, fmEnv, tempo)
     , tempo
+    # , tempo
 
     self
 

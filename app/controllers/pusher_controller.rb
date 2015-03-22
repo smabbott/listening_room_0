@@ -5,11 +5,12 @@ class PusherController < ApplicationController
     puts "-------------- PusherController"
     puts 'auth'
     @current_voice = Voice.create(address:request.remote_ip)
+    voice = @current_voice.attributes.reject{|k,v| k.to_sym == :address}
+    voice[:digits] = @current_voice.digits
     response = Pusher[params[:channel_name]].authenticate(params[:socket_id], {
       :user_id => @current_voice.id,
       :user_info => {
-        :voice => @current_voice.attributes.reject{|k,v| k.to_sym == :address},
-        :digits => @current_voice.digits
+        :voice => voice,
       }
     })
 

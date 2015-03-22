@@ -5,27 +5,27 @@ class window.DigitsController
     for d in ds
       @addDigits(d)
 
-  addDigit:(d)->
-    dig = new Digit(d)
+  addDigit:(d, pid)->
+    dig = new Digit(d, pid)
     @digits.push dig
     @el.append(dig.el)
 
   # TODO:
   removeDigit:(d)->
     for digit in @digits
-      if (digit.id == d.id) 
+      if (digit.parentId == d.id) 
         digit.end() 
 
   addDigits:(d)->
-    ipBase10 = d.split('.').map (i)->
+    ipBase10 = d.digits.split('.').map (i)->
       parseInt(i)
 
     for part in ipBase10
-      @addDigit(part)
+      @addDigit(part, d.id)
 
 
 class Digit
-  constructor:(@value)->
+  constructor:(@value, @parentId)->
     @el = $("<div class='digit'></div>")
     @animateCounter()
     @
