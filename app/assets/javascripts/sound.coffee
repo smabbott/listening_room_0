@@ -9,6 +9,36 @@ if contextClass
   # Web Audio API is available.
   context = new contextClass()
 
+request = new XMLHttpRequest()
+request.open('GET', '/impulse.wav', true)
+request.responseType = 'arraybuffer'
+
+# Reverb
+mixer = context.createConvolver();
+impulseResponseBuffer = null
+# Decode asynchronously
+# Impulse sample for Rverb
+# Sample from http://www.samplicity.com/bricasti-m7-impulse-responses/
+request.onload = ->
+  context.decodeAudioData request.response, (theBuffer)->
+    # buffer = theBuffer
+    impulseResponseBuffer = theBuffer
+    mixer.buffer = impulseResponseBuffer;
+    # dynamic compression
+    compressor = context.createDynamicsCompressor();
+
+    mixer.connect(compressor);
+    compressor.connect(context.destination);
+
+    
+  , (e)->
+    console.log e
+
+request.send();
+
+
+
+
 class window.VoicesController
   constructor: (vs)->
     @voices = for v in vs
@@ -48,6 +78,7 @@ class Envelope
 
 class Voice
   constructor: (@parts)-> 
+    @endNode = null
     self = @
     @id = @parts.id
     carrier = new OSC("sine", @parts.carrier)
@@ -83,11 +114,12 @@ class Voice
 
     # Connect the node you want to spatialize to a panner.
     env.node.connect(panner);
-    panner.connect(context.destination)
+    panner.connect(mixer)
 
     self.impulse(env, amEnv, fmEnv, tempo)
 
     @interval = 0
+    # fixme: want to delay start of each note
     # setInterval ->
     @interval = setInterval -> 
       self.impulse(env, amEnv, fmEnv, tempo)
