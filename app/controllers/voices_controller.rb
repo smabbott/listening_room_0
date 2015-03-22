@@ -2,21 +2,26 @@ class VoicesController < ApplicationController
 
   skip_before_filter :verify_authenticity_token, only: :presence_event
   
-  # def presence_event
-  #   puts "----------------------------------"
-  #   puts "catch presence event"
-  #   # todo: different things depending on event
-  #   params["events"].each do |event|
-  #     case event["name"]
-  #     when "member_added"
-  #       # broadcast member_added to 
-  #     end
-  #     params["events"]["voice"]
-  #   end
+  def presence_event
+    puts "----------------------------------"
+    puts "catch presence event"
+    # todo: different things depending on event
+    params["events"].each do |event|
+      if event["name"] == 'member_removed'
+        params["events"]["voice"]
+        voice = Voice.find params["events"]["user_id"]
+        voice.destroy
+      end
+      # case event["name"]
+      # when "member_added"
+      #   # broadcast member_added to 
 
-  #   puts params
-  #   render nothing: true, status: 200
-  # end
+      # end
+    end
+
+    puts params
+    render nothing: true, status: 200
+  end
 
   def delete
     puts "------------- ips controller: delete"
