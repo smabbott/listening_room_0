@@ -9,7 +9,7 @@ class VoicesController < ApplicationController
     params["events"].each do |event|
       if event["name"] == 'member_removed'
         params["events"]["voice"]
-        voice = Voice.find params["events"]["user_id"]
+        voice = Voice.find event["user_id"]
         voice.destroy
       end
       # case event["name"]
@@ -17,6 +17,7 @@ class VoicesController < ApplicationController
       #   # broadcast member_added to 
 
       # end
+      render json:{head: :ok}
     end
 
     puts params
